@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Calculator</string>
+    <string name="btnSimple">Simple</string>
+    <string name="btnAdvanced">Advanced</string>
+    <string name="btnAbout">About</string>
+    <string name="btnExit">Exit</string>
 </resources>

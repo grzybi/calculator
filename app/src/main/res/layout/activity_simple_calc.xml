@@ -27,17 +27,17 @@
             android:scrollbarStyle="insideInset">
 
             <Button
-                android:id="@+id/button0"
+                android:id="@+id/buttonClear"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnClear"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buttonBlank1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
@@ -47,7 +47,7 @@
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonBlank2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
@@ -57,13 +57,61 @@
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/buttonSign"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnSign"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:weightSum="4"
+            android:scrollbarStyle="insideInset">
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="1"
+                android:text="@string/btn7"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/btn8"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:text="@string/btn9"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/buttonDiv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:text="@string/btnDiv"
                 android:textSize="24sp" />
         </TableRow>
 
@@ -81,7 +129,7 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn4"
                 android:textSize="24sp" />
 
             <Button
@@ -91,7 +139,7 @@
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn5"
                 android:textSize="24sp" />
 
             <Button
@@ -101,17 +149,17 @@
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn6"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/buttonMul"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnMul"
                 android:textSize="24sp" />
         </TableRow>
 
@@ -123,43 +171,43 @@
             android:scrollbarStyle="insideInset">
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn1"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn2"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn3"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/buttonSub"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnSub"
                 android:textSize="24sp" />
         </TableRow>
 
@@ -171,91 +219,43 @@
             android:scrollbarStyle="insideInset">
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/button0"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btn0"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button13"
+                android:id="@+id/buttonDot"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnDot"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button14"
+                android:id="@+id/buttonResult"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnResult"
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/button15"
+                android:id="@+id/buttonAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                android:text=""
-                android:textSize="24sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:weightSum="4"
-            android:scrollbarStyle="insideInset">
-
-            <Button
-                android:id="@+id/button16"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="3dp"
-                android:layout_weight="1"
-                android:text=""
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button17"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:text=""
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button18"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:text=""
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button19"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:text=""
+                android:text="@string/btnAdd"
                 android:textSize="24sp" />
         </TableRow>
 

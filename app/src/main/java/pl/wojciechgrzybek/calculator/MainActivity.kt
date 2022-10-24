@@ -3,7 +3,6 @@ package pl.wojciechgrzybek.calculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 
@@ -14,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnSimple: Button = findViewById(R.id.btnSimple)
         btnSimple.setOnClickListener {
-            Toast.makeText(this, "to be implemented", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SimpleCalcActivity::class.java))
         }
 
         val btnAdvanced: Button = findViewById(R.id.btnAdvanced)

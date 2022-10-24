@@ -9,7 +9,6 @@ import android.widget.TextView
 class SimpleCalcActivity : AppCompatActivity() {
 
     private lateinit var display: TextView
-    private lateinit var btn: Button
 
     private var reg1: Double = 0.0
 
@@ -43,22 +42,28 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private fun onNumberButtonClicked(label: Int) {
         Log.d("Number Button", getString(label))
-        display.text = getString(label)
+        if (display.text.toString() == "0") {
+            display.text = getString(label)
+        } else {
+            if (display.text.toString().countDigitsRegex() < 10) {
+                val newValue = display.text.toString() + getString(label)
+                display.text = newValue
+            }
+        }
     }
 
     private fun onOperatorButtonClicked(label: Int) {
         Log.d("Operator Button", getString(label))
-        display.text = getString(label)
     }
 
     private fun onDotButtonClicked() {
         Log.d("Dot Button", getString(R.string.btnDot))
-        display.text = getString(R.string.btnDot)
+        // display.text = getString(R.string.btnDot)
     }
 
     private fun onSignButtonClicked() {
         Log.d("Sign Button", getString(R.string.btnSign))
-        display.text = getString(R.string.btnSign)
+        // display.text = getString(R.string.btnSign)
     }
 
     private fun onClearButtonClicked() {
@@ -68,6 +73,7 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private fun onEqualButtonClicked() {
         Log.d("Equal Button", getString(R.string.btnResult))
-        display.text = getString(R.string.btnResult)
     }
+
+    private fun CharSequence.countDigitsRegex(): Int = Regex("\\d").findAll(this).count()
 }

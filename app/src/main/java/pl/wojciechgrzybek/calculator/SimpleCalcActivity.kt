@@ -11,6 +11,8 @@ class SimpleCalcActivity : AppCompatActivity() {
     private lateinit var display: TextView
 
     private var reg1: Double = 0.0
+    private var isCounterCleared = true
+    private var isDotPresent = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,7 @@ class SimpleCalcActivity : AppCompatActivity() {
             display.text = getString(label)
         } else {
             if (display.text.toString().countDigitsRegex() < 10) {
+                isCounterCleared = false
                 val newValue = display.text.toString() + getString(label)
                 display.text = newValue
             }
@@ -58,16 +61,31 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private fun onDotButtonClicked() {
         Log.d("Dot Button", getString(R.string.btnDot))
+        if ((!isDotPresent) && (display.text.toString().countDigitsRegex() != 10)) {
+            val newValue = display.text.toString() + getString(R.string.btnDot)
+            display.text = newValue
+            isDotPresent = true
+            isCounterCleared = false
+        }
         // display.text = getString(R.string.btnDot)
     }
 
     private fun onSignButtonClicked() {
         Log.d("Sign Button", getString(R.string.btnSign))
-        // display.text = getString(R.string.btnSign)
+        if (!isCounterCleared) {
+            if (display.text.toString()[0] != '-') {
+                val newValue = '-' + display.text.toString()
+                display.text = newValue
+            } else {
+                display.text = display.text.drop(1)
+            }
+        }
     }
 
     private fun onClearButtonClicked() {
         Log.d("Clear Button", getString(R.string.btnClear))
+        isCounterCleared = true
+        isDotPresent = false
         display.text = "0"
     }
 

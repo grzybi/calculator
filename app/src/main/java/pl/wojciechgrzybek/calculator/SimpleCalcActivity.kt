@@ -10,12 +10,19 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private lateinit var display: TextView
 
-    private var reg1: Double = 0.0
-    private var reg2: Double = 0.0
-    private var op: String = ""
-    private var isCounterCleared = true
-    private var isDotPresent = false
-    private var lastKey = ""
+//    private var reg1: Double = 0.0
+//    private var reg2: Double = 0.0
+//    private var op: String = ""
+//    private var isCounterCleared = true
+//    private var isDotPresent = false
+//    private var lastKey = ""
+
+    private var reg: Double = 0.0
+//    private var calcState = ""
+    private var operand = ""
+    private var displayState:DisplayState = DisplayState.NEW
+    private var lastAction: LastAction = LastAction.NONE
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,26 @@ class SimpleCalcActivity : AppCompatActivity() {
         Log.d("Number Button", getString(label))
 
         if (display.text.toString() == "0") {
+            Log.d("NB", "0")
+            display.text = getString(label)
+            displayState = DisplayState.CONTINUE
+            lastAction = LastAction.DIGIT
+        } else {
+            Log.d("NB", "0-9")
+            if (display.text.toString().countDigitsRegex() < 10) {
+                if (displayState == DisplayState.CONTINUE) {
+                    val newValue = display.text.toString() + getString(label)
+                    display.text = newValue
+                } else {
+                    display.text = getString(label)
+                }
+                displayState = DisplayState.CONTINUE
+                lastAction = LastAction.DIGIT
+            }
+        }
+
+        /*
+        if (display.text.toString() == "0") {
             Log.d("NB", "1")
             display.text = getString(label)
 //            isCounterCleared = false
@@ -65,36 +92,46 @@ class SimpleCalcActivity : AppCompatActivity() {
             }
         }
         lastKey = "digit"
+
+         */
     }
 
     private fun onOperatorButtonClicked(label: Int) {
         Log.d("Operator Button", getString(label))
-        if (op == "") {
-            reg1 = display.text.toString().toDouble()
-            isDotPresent = false
-//            isCounterCleared = true
-            Log.d("Parsed", reg1.toString())
+
+        if (operand != "") {
+            if (lastAction == LastAction.OPER4) {
+                displayState = DisplayState.NEW
+                operand = getString(label)
+            } else {
+                displayState = DisplayState.NEW
+                reg = doOperation(reg, operand, display.text.toString().toDouble())
+                display.text = reg.toString()
+                operand = getString(label)
+            }
+        } else {
+            reg = display.text.toString().toDouble()
+            displayState = DisplayState.NEW
+            lastAction = LastAction.OPER4
+            operand = getString(label)
         }
-        op = getString(label)
-        lastKey = "oper2"
     }
 
     private fun onDotButtonClicked() {
         Log.d("Dot Button", getString(R.string.btnDot))
-        if ((!isDotPresent) && (display.text.toString().countDigitsRegex() != 10)) {
+        if (!(display.text.toString().contains('.')) && (display.text.toString().countDigitsRegex() != 10)) {
             val newValue = display.text.toString() + getString(R.string.btnDot)
             display.text = newValue
-            isDotPresent = true
-//            isCounterCleared = false
-            // ??
-            lastKey = "digit"
+            displayState = DisplayState.CONTINUE
+
+        //    lastKey = "digit"
         }
         // display.text = getString(R.string.btnDot)
     }
 
     private fun onSignButtonClicked() {
         Log.d("Sign Button", getString(R.string.btnSign))
-        if (!isCounterCleared) {
+        if (displayState != DisplayState.NEW) {
             if (display.text.toString()[0] != '-') {
                 val newValue = '-' + display.text.toString()
                 display.text = newValue
@@ -106,58 +143,58 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private fun onClearButtonClicked() {
         Log.d("Clear Button", getString(R.string.btnClear))
-        Log.d("cleared?", if (lastKey == "ce") "true" else "false")
+        Log.d("Cleared? ", if (lastAction == LastAction.CLEAR) "true" else "false")
 
-        if (lastKey == "ce") {
-            isCounterCleared = true
-            isDotPresent = false
+        if (lastAction == LastAction.CLEAR) {
+            displayState = DisplayState.NEW
+            lastAction = LastAction.NONE
             display.text = "0"
-            lastKey = "none"
-            reg1 = 0.0
-            reg2 = 0.0
-            op = ""
-
+            reg = 0.0
+            operand = ""
         } else {
-            isCounterCleared = true
-            isDotPresent = false
+            displayState = DisplayState.NEW
+            lastAction = LastAction.CLEAR
             display.text = "0"
-            lastKey = "ce"
         }
     }
 
     private fun onEqualButtonClicked() {
         Log.d("Equal Button", getString(R.string.btnResult))
 
-        if (op != "") {
-            Log.d("reg1", reg1.toString())
-            Log.d("op", op)
-            Log.d("disp", display.text.toString())
-
-            if (lastKey == "digit") {
-                reg2 = display.text.toString().toDouble()
-            }
-
-            reg1 = doOperation(reg1, op, reg2)
-
-            display.text = reg1.toString()
-            lastKey = "equal"
-        }
+//        if (op != "") {
+//            Log.d("reg1", reg1.toString())
+//            Log.d("op", op)
+//            Log.d("disp", display.text.toString())
+//
+//            if (lastKey == "digit") {
+//                reg2 = display.text.toString().toDouble()
+//            }
+//
+//            reg1 = doOperation(reg1, op, reg2)
+//
+//            display.text = reg1.toString()
+//            lastKey = "equal"
+//        }
     }
 
     private fun doOperation(arg1: Double, oper: String, arg2: Double): Double {
+
+        Log.d("doOperation arg1", arg1.toString())
+        Log.d("doOperation oper", oper)
+        Log.d("doOperation arg2", arg2.toString())
 
         when (oper) {
             "+" -> {
                 return arg1 + arg2
             }
             "-" -> {
-                display.text = (reg1 - arg2.toDouble()).toString()
+                // display.text = (reg1 - arg2.toDouble()).toString()
             }
             "*" -> {
-                display.text = (reg1 * arg2.toDouble()).toString()
+                // display.text = (reg1 * arg2.toDouble()).toString()
             }
             "/" -> {
-                display.text = (reg1 / arg2.toDouble()).toString()
+                // display.text = (reg1 / arg2.toDouble()).toString()
             }
         }
 
@@ -165,4 +202,12 @@ class SimpleCalcActivity : AppCompatActivity() {
     }
 
     private fun CharSequence.countDigitsRegex(): Int = Regex("\\d").findAll(this).count()
+
+    private enum class DisplayState {
+        NEW, CONTINUE
+    }
+
+    private enum class LastAction {
+        NONE, DIGIT, OPER4, EQUAL, CLEAR
+    }
 }

@@ -18,9 +18,10 @@ class SimpleCalcActivity : AppCompatActivity() {
 //    private var lastKey = ""
 
     private var reg: Double = 0.0
-//    private var calcState = ""
+
+    //    private var calcState = ""
     private var operand = ""
-    private var displayState:DisplayState = DisplayState.NEW
+    private var displayState: DisplayState = DisplayState.NEW
     private var lastAction: LastAction = LastAction.NONE
 
 
@@ -30,26 +31,26 @@ class SimpleCalcActivity : AppCompatActivity() {
 
         display = findViewById(R.id.textView)
 
-        (findViewById<Button>(R.id.button0)).setOnClickListener {onNumberButtonClicked(R.string.btn0)}
-        (findViewById<Button>(R.id.button1)).setOnClickListener {onNumberButtonClicked(R.string.btn1)}
-        (findViewById<Button>(R.id.button2)).setOnClickListener {onNumberButtonClicked(R.string.btn2)}
-        (findViewById<Button>(R.id.button3)).setOnClickListener {onNumberButtonClicked(R.string.btn3)}
-        (findViewById<Button>(R.id.button4)).setOnClickListener {onNumberButtonClicked(R.string.btn4)}
-        (findViewById<Button>(R.id.button5)).setOnClickListener {onNumberButtonClicked(R.string.btn5)}
-        (findViewById<Button>(R.id.button6)).setOnClickListener {onNumberButtonClicked(R.string.btn6)}
-        (findViewById<Button>(R.id.button7)).setOnClickListener {onNumberButtonClicked(R.string.btn7)}
-        (findViewById<Button>(R.id.button8)).setOnClickListener {onNumberButtonClicked(R.string.btn8)}
-        (findViewById<Button>(R.id.button9)).setOnClickListener {onNumberButtonClicked(R.string.btn9)}
+        (findViewById<Button>(R.id.button0)).setOnClickListener { onNumberButtonClicked(R.string.btn0) }
+        (findViewById<Button>(R.id.button1)).setOnClickListener { onNumberButtonClicked(R.string.btn1) }
+        (findViewById<Button>(R.id.button2)).setOnClickListener { onNumberButtonClicked(R.string.btn2) }
+        (findViewById<Button>(R.id.button3)).setOnClickListener { onNumberButtonClicked(R.string.btn3) }
+        (findViewById<Button>(R.id.button4)).setOnClickListener { onNumberButtonClicked(R.string.btn4) }
+        (findViewById<Button>(R.id.button5)).setOnClickListener { onNumberButtonClicked(R.string.btn5) }
+        (findViewById<Button>(R.id.button6)).setOnClickListener { onNumberButtonClicked(R.string.btn6) }
+        (findViewById<Button>(R.id.button7)).setOnClickListener { onNumberButtonClicked(R.string.btn7) }
+        (findViewById<Button>(R.id.button8)).setOnClickListener { onNumberButtonClicked(R.string.btn8) }
+        (findViewById<Button>(R.id.button9)).setOnClickListener { onNumberButtonClicked(R.string.btn9) }
 
-        (findViewById<Button>(R.id.buttonAdd)).setOnClickListener {onOperatorButtonClicked(R.string.btnAdd)}
-        (findViewById<Button>(R.id.buttonSub)).setOnClickListener {onOperatorButtonClicked(R.string.btnSub)}
-        (findViewById<Button>(R.id.buttonMul)).setOnClickListener {onOperatorButtonClicked(R.string.btnMul)}
-        (findViewById<Button>(R.id.buttonDiv)).setOnClickListener {onOperatorButtonClicked(R.string.btnDiv)}
+        (findViewById<Button>(R.id.buttonAdd)).setOnClickListener { onOperatorButtonClicked(R.string.btnAdd) }
+        (findViewById<Button>(R.id.buttonSub)).setOnClickListener { onOperatorButtonClicked(R.string.btnSub) }
+        (findViewById<Button>(R.id.buttonMul)).setOnClickListener { onOperatorButtonClicked(R.string.btnMul) }
+        (findViewById<Button>(R.id.buttonDiv)).setOnClickListener { onOperatorButtonClicked(R.string.btnDiv) }
 
-        (findViewById<Button>(R.id.buttonSign)).setOnClickListener {onSignButtonClicked()}
-        (findViewById<Button>(R.id.buttonDot)).setOnClickListener {onDotButtonClicked()}
-        (findViewById<Button>(R.id.buttonClear)).setOnClickListener {onClearButtonClicked()}
-        (findViewById<Button>(R.id.buttonResult)).setOnClickListener {onEqualButtonClicked()}
+        (findViewById<Button>(R.id.buttonSign)).setOnClickListener { onSignButtonClicked() }
+        (findViewById<Button>(R.id.buttonDot)).setOnClickListener { onDotButtonClicked() }
+        (findViewById<Button>(R.id.buttonClear)).setOnClickListener { onClearButtonClicked() }
+        (findViewById<Button>(R.id.buttonResult)).setOnClickListener { onEqualButtonClicked() }
     }
 
     private fun onNumberButtonClicked(label: Int) {
@@ -98,7 +99,9 @@ class SimpleCalcActivity : AppCompatActivity() {
     }
 
     private fun onDotButtonClicked() {
-        if (!(display.text.toString().contains('.')) && (display.text.toString().countDigitsRegex() != 10)) {
+        if (!(display.text.toString().contains('.'))
+            && (display.text.toString().countDigitsRegex() != 10)
+        ) {
             val newValue = display.text.toString() + getString(R.string.btnDot)
             display.text = newValue
             displayState = DisplayState.CONTINUE
@@ -168,13 +171,14 @@ class SimpleCalcActivity : AppCompatActivity() {
                 return arg1 + arg2
             }
             "-" -> {
-                // display.text = (reg1 - arg2.toDouble()).toString()
+                return arg1 - arg2
             }
             "*" -> {
-                // display.text = (reg1 * arg2.toDouble()).toString()
+                return arg1 * arg2
             }
             "/" -> {
-                // display.text = (reg1 / arg2.toDouble()).toString()
+                // TODO add catching division by 0
+                return arg1 / arg2
             }
         }
 

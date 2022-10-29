@@ -73,27 +73,6 @@ class SimpleCalcActivity : AppCompatActivity() {
                 lastAction = LastAction.DIGIT
             }
         }
-
-        /*
-        if (display.text.toString() == "0") {
-            Log.d("NB", "1")
-            display.text = getString(label)
-//            isCounterCleared = false
-        } else if ((lastKey == "oper2") || (lastKey == "ce")) {
-            Log.d("NB", "2")
-            display.text = getString(label)
-//            isCounterCleared = false
-        } else {
-            Log.d("NB", "3")
-            if (display.text.toString().countDigitsRegex() < 10) {
-//                isCounterCleared = false
-                val newValue = display.text.toString() + getString(label)
-                display.text = newValue
-            }
-        }
-        lastKey = "digit"
-
-         */
     }
 
     private fun onOperatorButtonClicked(label: Int) {
@@ -105,6 +84,7 @@ class SimpleCalcActivity : AppCompatActivity() {
                 operand = getString(label)
             } else {
                 displayState = DisplayState.NEW
+                lastAction = LastAction.OPER4
                 reg = doOperation(reg, operand, display.text.toString().toDouble())
                 display.text = reg.toString()
                 operand = getString(label)
@@ -118,15 +98,15 @@ class SimpleCalcActivity : AppCompatActivity() {
     }
 
     private fun onDotButtonClicked() {
-        Log.d("Dot Button", getString(R.string.btnDot))
         if (!(display.text.toString().contains('.')) && (display.text.toString().countDigitsRegex() != 10)) {
             val newValue = display.text.toString() + getString(R.string.btnDot)
             display.text = newValue
             displayState = DisplayState.CONTINUE
-
-        //    lastKey = "digit"
+        } else if (lastAction == LastAction.OPER4) {
+            display.text = "0."
+            displayState = DisplayState.CONTINUE
+            lastAction = LastAction.DIGIT
         }
-        // display.text = getString(R.string.btnDot)
     }
 
     private fun onSignButtonClicked() {

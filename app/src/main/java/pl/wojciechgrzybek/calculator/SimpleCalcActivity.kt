@@ -18,6 +18,7 @@ class SimpleCalcActivity : AppCompatActivity() {
 //    private var lastKey = ""
 
     private var reg: Double = 0.0
+    private var reg2: Double = 0.0
 
     //    private var calcState = ""
     private var operand = ""
@@ -80,18 +81,29 @@ class SimpleCalcActivity : AppCompatActivity() {
         Log.d("Operator Button", getString(label))
 
         if (operand != "") {
+            Log.d("oper", "operand != 0")
             if (lastAction == LastAction.OPER4) {
+                Log.d("oper", "last to oper4")
                 displayState = DisplayState.NEW
                 operand = getString(label)
             } else {
+                Log.d("oper", "last inny niz oper4")
                 displayState = DisplayState.NEW
+                if (lastAction != LastAction.EQUAL) {
+                    Log.d("oper", "last inny niz equal")
+                    reg = doOperation(reg, operand, display.text.toString().toDouble())
+
+                }
+                reg2 = reg
                 lastAction = LastAction.OPER4
-                reg = doOperation(reg, operand, display.text.toString().toDouble())
+                Log.d("oper", "po sprawdzeniu czy inny niz equal")
                 display.text = reg.toString()
                 operand = getString(label)
             }
         } else {
+            Log.d("oper", "oper to pusty")
             reg = display.text.toString().toDouble()
+            reg2 = reg
             displayState = DisplayState.NEW
             lastAction = LastAction.OPER4
             operand = getString(label)
@@ -133,6 +145,7 @@ class SimpleCalcActivity : AppCompatActivity() {
             lastAction = LastAction.NONE
             display.text = "0"
             reg = 0.0
+            reg2 = 0.0
             operand = ""
         } else {
             displayState = DisplayState.NEW
@@ -143,6 +156,27 @@ class SimpleCalcActivity : AppCompatActivity() {
 
     private fun onEqualButtonClicked() {
         Log.d("Equal Button", getString(R.string.btnResult))
+
+        if (operand != "") {
+            Log.d("reg", reg.toString())
+            Log.d("op", operand)
+            Log.d("disp", display.text.toString())
+
+            Log.d("reg2", reg2.toString())
+            Log.d("lastoper", lastAction.toString())
+
+            if (lastAction == LastAction.DIGIT) {
+                Log.d("digit", "true")
+                reg = doOperation(reg, operand, display.text.toString().toDouble())
+                reg2 = reg
+            } else {
+                Log.d("digit", "false")
+                reg = doOperation(reg, operand, reg2)
+            }
+
+            display.text = reg.toString()
+            lastAction = LastAction.EQUAL
+        }
 
 //        if (op != "") {
 //            Log.d("reg1", reg1.toString())
@@ -166,23 +200,24 @@ class SimpleCalcActivity : AppCompatActivity() {
         Log.d("doOperation oper", oper)
         Log.d("doOperation arg2", arg2.toString())
 
+        var result: Double = 0.0
         when (oper) {
             "+" -> {
-                return arg1 + arg2
+                result = arg1 + arg2
             }
             "-" -> {
-                return arg1 - arg2
+                result = arg1 - arg2
             }
             "*" -> {
-                return arg1 * arg2
+                result = arg1 * arg2
             }
             "/" -> {
                 // TODO add catching division by 0
-                return arg1 / arg2
+                result = arg1 / arg2
             }
         }
 
-        return -1.0
+        return result
     }
 
     private fun CharSequence.countDigitsRegex(): Int = Regex("\\d").findAll(this).count()

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 
 class SimpleCalcActivity : AppCompatActivity() {
 
@@ -213,7 +214,12 @@ class SimpleCalcActivity : AppCompatActivity() {
             }
             "/" -> {
                 // TODO add catching division by 0
-                result = arg1 / arg2
+                result = if (arg2 == 0.0) {
+                    Toast.makeText(this, "Division by 0 is not allowed.", Toast.LENGTH_LONG).show()
+                    0.0
+                } else {
+                    arg1 / arg2
+                }
             }
         }
 

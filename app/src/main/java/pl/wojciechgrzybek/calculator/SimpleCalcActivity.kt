@@ -5,26 +5,30 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 
 class SimpleCalcActivity : AppCompatActivity() {
 
     private lateinit var display: TextView
 
-//    private var reg1: Double = 0.0
-//    private var reg2: Double = 0.0
-//    private var op: String = ""
-//    private var isCounterCleared = true
-//    private var isDotPresent = false
-//    private var lastKey = ""
-
     private var reg: Double = 0.0
     private var reg2: Double = 0.0
-
-    //    private var calcState = ""
     private var operand = ""
+    private var result: Double = 0.0
     private var displayState: DisplayState = DisplayState.NEW
     private var lastAction: LastAction = LastAction.NONE
 
+    private fun variables() {
+        Log.d("----", "dump start")
+        Log.d("display", display.text.toString())
+        Log.d("reg", reg.toString())
+        Log.d("reg2", reg2.toString())
+        Log.d("operand", operand)
+        Log.d("result", result.toString())
+        Log.d("displayState", displayState.toString())
+        Log.d("lastAction", lastAction.toString())
+        Log.d("----", "dump end")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +47,15 @@ class SimpleCalcActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.button8)).setOnClickListener { onNumberButtonClicked(R.string.btn8) }
         (findViewById<Button>(R.id.button9)).setOnClickListener { onNumberButtonClicked(R.string.btn9) }
 
-        (findViewById<Button>(R.id.buttonAdd)).setOnClickListener { onOperatorButtonClicked(R.string.btnAdd) }
-        (findViewById<Button>(R.id.buttonSub)).setOnClickListener { onOperatorButtonClicked(R.string.btnSub) }
-        (findViewById<Button>(R.id.buttonMul)).setOnClickListener { onOperatorButtonClicked(R.string.btnMul) }
-        (findViewById<Button>(R.id.buttonDiv)).setOnClickListener { onOperatorButtonClicked(R.string.btnDiv) }
+        (findViewById<Button>(R.id.buttonAdd)).setOnClickListener { onNewOperatorButtonClicked(R.string.btnAdd) }
+        (findViewById<Button>(R.id.buttonSub)).setOnClickListener { onNewOperatorButtonClicked(R.string.btnSub) }
+        (findViewById<Button>(R.id.buttonMul)).setOnClickListener { onNewOperatorButtonClicked(R.string.btnMul) }
+        (findViewById<Button>(R.id.buttonDiv)).setOnClickListener { onNewOperatorButtonClicked(R.string.btnDiv) }
 
         (findViewById<Button>(R.id.buttonSign)).setOnClickListener { onSignButtonClicked() }
         (findViewById<Button>(R.id.buttonDot)).setOnClickListener { onDotButtonClicked() }
         (findViewById<Button>(R.id.buttonClear)).setOnClickListener { onClearButtonClicked() }
-        (findViewById<Button>(R.id.buttonResult)).setOnClickListener { onEqualButtonClicked() }
+        (findViewById<Button>(R.id.buttonResult)).setOnClickListener { onNewEqualButtonClicked() }
     }
 
     private fun onNumberButtonClicked(label: Int) {
@@ -74,6 +78,64 @@ class SimpleCalcActivity : AppCompatActivity() {
                 displayState = DisplayState.CONTINUE
                 lastAction = LastAction.DIGIT
             }
+        }
+    }
+
+    private fun onNewOperatorButtonClicked(label: Int) {
+        Log.d("New Operator Button", getString(label))
+
+        if (operand != "") {
+            when (lastAction) {
+                LastAction.NONE -> {
+//                    Log.d("oper NONE", getString(label))
+//                    Toast.makeText(this, "oper NONE", Toast.LENGTH_SHORT).show()
+//                    operand = getString(label)
+//                    lastAction = LastAction.OPER4
+                }
+                LastAction.DIGIT -> {
+                    Log.d("oper DIGIT", getString(label))
+                    Toast.makeText(this, "oper DIGIT", Toast.LENGTH_SHORT).show()
+                    reg2 = display.text.toString().toDouble()
+                    if (operand != "") {
+                        Toast.makeText(this, "oper != ''", Toast.LENGTH_SHORT).show()
+                        result = doOperation(reg, operand, reg2)
+                        reg = result
+                        display.text = result.toString()
+                    }
+                    operand = getString(label)
+                    lastAction = LastAction.OPER4
+                    displayState = DisplayState.NEW
+                }
+                LastAction.OPER4 -> {
+                    Log.d("oper OPER4", getString(label))
+                    Toast.makeText(this, "oper OPER4", Toast.LENGTH_SHORT).show()
+                    operand = getString(label)
+//                    reg2 = result
+//                    reg = reg2
+                }
+                LastAction.EQUAL -> {
+                    Log.d("oper EQUAL", getString(label))
+                    operand = getString(label)
+                    lastAction = LastAction.OPER4
+                    // może to? lastAction = LastAction.OPER4_AFTER_EQUAL
+                }
+//                LastAction.EQUAL_AFTER_OPER4 -> {
+//                    Log.d("oper EQUAL_AFTER_OPER4", getString(label))
+//                }
+//                LastAction.OPER4_AFTER_EQUAL -> {
+//                    Log.d("oper OPER4_AFTER_EQUAL", getString(label))
+//                }
+                else -> {
+                    Log.d("oper other", getString(label))
+                }
+            }
+        } else {
+            Log.d("oper NONE", getString(label))
+            Toast.makeText(this, "oper NONE w else", Toast.LENGTH_SHORT).show()
+            reg = display.text.toString().toDouble()
+            operand = getString(label)
+            lastAction = LastAction.OPER4
+            displayState = DisplayState.NEW
         }
     }
 
@@ -147,10 +209,45 @@ class SimpleCalcActivity : AppCompatActivity() {
             reg = 0.0
             reg2 = 0.0
             operand = ""
+            result = 0.0
         } else {
             displayState = DisplayState.NEW
             lastAction = LastAction.CLEAR
             display.text = "0"
+        }
+    }
+
+    private fun onNewEqualButtonClicked() {
+        Log.d("New Equal Button", getString(R.string.btnResult))
+        if (operand != "") {
+            if (lastAction == LastAction.DIGIT) {
+                Log.d("msg","wcisniety =, operand niepusty, lastaction digit")
+                reg2 = display.text.toString().toDouble()
+                result = doOperation(reg, operand, reg2)
+                reg = result
+                display.text = result.toString()
+                lastAction = LastAction.EQUAL
+                displayState = DisplayState.NEW
+            } else if (lastAction == LastAction.EQUAL) {
+                Log.d("msg","wcisniety =, operand niepusty, lastaction equal")
+                Toast.makeText(this,"equal after equal", Toast.LENGTH_SHORT)
+                result = doOperation(reg, operand, reg2)
+                reg = result
+                display.text = result.toString()
+                displayState = DisplayState.NEW
+            } else if (lastAction == LastAction.OPER4) {
+                Log.d("msg","wcisniety =, operand niepusty, lastaction oper4")
+                Toast.makeText(this,"To implement", Toast.LENGTH_SHORT)
+                variables()
+                result = doOperation(reg, operand, reg)
+                reg2 = reg
+                reg = result
+                display.text = result.toString()
+                displayState = DisplayState.NEW
+                lastAction = LastAction.EQUAL
+                variables()
+            //                result = doOperation()
+            }
         }
     }
 
@@ -177,21 +274,6 @@ class SimpleCalcActivity : AppCompatActivity() {
             display.text = reg.toString()
             lastAction = LastAction.EQUAL
         }
-
-//        if (op != "") {
-//            Log.d("reg1", reg1.toString())
-//            Log.d("op", op)
-//            Log.d("disp", display.text.toString())
-//
-//            if (lastKey == "digit") {
-//                reg2 = display.text.toString().toDouble()
-//            }
-//
-//            reg1 = doOperation(reg1, op, reg2)
-//
-//            display.text = reg1.toString()
-//            lastKey = "equal"
-//        }
     }
 
     private fun doOperation(arg1: Double, oper: String, arg2: Double): Double {
@@ -227,6 +309,6 @@ class SimpleCalcActivity : AppCompatActivity() {
     }
 
     private enum class LastAction {
-        NONE, DIGIT, OPER4, EQUAL, CLEAR
+        NONE, DIGIT, OPER4, EQUAL, CLEAR//, EQUAL_AFTER_OPER4, OPER4_AFTER_EQUAL
     }
 }

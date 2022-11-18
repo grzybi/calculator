@@ -24,5 +24,15 @@
     <string name="btnSign">+/-</string>
     <string name="btnClear">C/CE</string>
     <string name="btnDot">.</string>
+    
+    <string name="btnPi">Pi</string>
+    <string name="btnSin">sin</string>
+    <string name="btnCos">cos</string>
+    <string name="btnTan">tan</string>
+    <string name="btnLn">ln</string>
+    <string name="btnSqrt">sqrt</string>
+    <string name="btnX2">x^2</string>
+    <string name="btnXY">x^y</string>
+    <string name="btnLog">log</string>
 
 </resources>

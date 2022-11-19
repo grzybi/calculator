@@ -1,5 +1,6 @@
 package pl.wojciechgrzybek.calculator
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,12 +24,17 @@ class MainActivity : AppCompatActivity() {
 
         val btnAbout: Button = findViewById(R.id.btnAbout)
         btnAbout.setOnClickListener {
-            Toast.makeText(this, "to be implemented", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, AboutActivity::class.java))
         }
 
         val btnExit: Button = findViewById(R.id.btnExit)
         btnExit.setOnClickListener {
-            Toast.makeText(this, "to be implemented", Toast.LENGTH_SHORT).show()
+            this.finish()
+            System.exit(0)
+
+
+
+//            Toast.makeText(this, "to be implemented", Toast.LENGTH_SHORT).show()
         }
     }
 }

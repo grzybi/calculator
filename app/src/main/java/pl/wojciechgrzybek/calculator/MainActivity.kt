@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnAdvanced: Button = findViewById(R.id.btnAdvanced)
         btnAdvanced.setOnClickListener {
-            Toast.makeText(this, "to be implemented", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, AdvancedCalcActivity::class.java))
         }
 
         val btnAbout: Button = findViewById(R.id.btnAbout)

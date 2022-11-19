@@ -30,11 +30,45 @@ class AdvancedCalcActivity : AppCompatActivity() {
         Log.d("----", "dump end")
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("test", "test123")
+        outState.putString("display", display.text.toString())
+        outState.putDouble("reg", reg)
+        outState.putDouble("reg2", reg2)
+        outState.putString("operand", operand)
+        outState.putDouble("result", result)
+        outState.putSerializable("displayState", displayState)
+        outState.putSerializable("lastAction", lastAction)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        display.text = savedInstanceState.getString("display")
+        reg = savedInstanceState.getDouble("reg")
+        reg2 = savedInstanceState.getDouble("reg2")
+        operand = savedInstanceState.getString("operand").toString()
+        result = savedInstanceState.getDouble("result")
+        displayState = savedInstanceState.getSerializable("displayState") as DisplayState
+        lastAction = savedInstanceState.getSerializable("lastAction") as LastAction
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_advanced_calc)
 
         display = findViewById(R.id.textView)
+
+        if (savedInstanceState != null) {
+            display.text = savedInstanceState.getString("display")
+            reg = savedInstanceState.getDouble("reg")
+            reg2 = savedInstanceState.getDouble("reg2")
+            operand = savedInstanceState.getString("operand").toString()
+            result = savedInstanceState.getDouble("result")
+            displayState = savedInstanceState.getSerializable("displayState") as DisplayState
+            lastAction = savedInstanceState.getSerializable("lastAction") as LastAction
+        }
 
         (findViewById<Button>(R.id.button0)).setOnClickListener { onNumberButtonClicked(R.string.btn0) }
         (findViewById<Button>(R.id.button1)).setOnClickListener { onNumberButtonClicked(R.string.btn1) }
@@ -51,7 +85,13 @@ class AdvancedCalcActivity : AppCompatActivity() {
         (findViewById<Button>(R.id.buttonSub)).setOnClickListener { onOperatorButtonClicked(R.string.btnSub) }
         (findViewById<Button>(R.id.buttonMul)).setOnClickListener { onOperatorButtonClicked(R.string.btnMul) }
         (findViewById<Button>(R.id.buttonDiv)).setOnClickListener { onOperatorButtonClicked(R.string.btnDiv) }
+//        (findViewById<Button>(R.id.buttonXY)).setOnClickListener { onOperatorButtonClicked(R.string.btnXY) }
 
+        (findViewById<Button>(R.id.buttonSin)).setOnClickListener { onOperator2ButtonClicked(R.string.btnSin) }
+        (findViewById<Button>(R.id.buttonCos)).setOnClickListener { onOperator2ButtonClicked(R.string.btnCos) }
+        (findViewById<Button>(R.id.buttonTan)).setOnClickListener { onOperator2ButtonClicked(R.string.btnTan) }
+
+        (findViewById<Button>(R.id.buttonPi)).setOnClickListener { onPiButtonClicked() }
         (findViewById<Button>(R.id.buttonSign)).setOnClickListener { onSignButtonClicked() }
         (findViewById<Button>(R.id.buttonDot)).setOnClickListener { onDotButtonClicked() }
         (findViewById<Button>(R.id.buttonClear)).setOnClickListener { onClearButtonClicked() }
@@ -81,6 +121,11 @@ class AdvancedCalcActivity : AppCompatActivity() {
         }
     }
 
+    private fun onOperator2ButtonClicked(label: Int) {
+        Log.d("->", getString(label))
+
+    }
+
     private fun onOperatorButtonClicked(label: Int) {
         Log.d("New Operator Button", getString(label))
 
@@ -97,17 +142,17 @@ class AdvancedCalcActivity : AppCompatActivity() {
                         display.text = result.toString()
                     }
                     operand = getString(label)
-                    lastAction = LastAction.OPER4
+                    lastAction = LastAction.OPER_2ARG
                     displayState = DisplayState.NEW
                 }
-                LastAction.OPER4 -> {
-                    Log.d("oper OPER4", getString(label))
+                LastAction.OPER_2ARG -> {
+                    Log.d("oper OPER_2ARG", getString(label))
                     operand = getString(label)
                 }
                 LastAction.EQUAL -> {
                     Log.d("oper EQUAL", getString(label))
                     operand = getString(label)
-                    lastAction = LastAction.OPER4
+                    lastAction = LastAction.OPER_2ARG
                 }
                 else -> {
                     Log.d("oper other", getString(label))
@@ -117,7 +162,7 @@ class AdvancedCalcActivity : AppCompatActivity() {
             Log.d("oper NONE", getString(label))
             reg = display.text.toString().toDouble()
             operand = getString(label)
-            lastAction = LastAction.OPER4
+            lastAction = LastAction.OPER_2ARG
             displayState = DisplayState.NEW
         }
     }
@@ -129,7 +174,7 @@ class AdvancedCalcActivity : AppCompatActivity() {
             val newValue = display.text.toString() + getString(R.string.btnDot)
             display.text = newValue
             displayState = DisplayState.CONTINUE
-        } else if (lastAction == LastAction.OPER4) {
+        } else if (lastAction == LastAction.OPER_2ARG) {
             display.text = "0."
             displayState = DisplayState.CONTINUE
             lastAction = LastAction.DIGIT
@@ -147,6 +192,35 @@ class AdvancedCalcActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun onPiButtonClicked() {
+        Log.d("Pi Button", "pi")
+
+        display.text = "3.141592654"
+        displayState = DisplayState.CONTINUE
+        lastAction = LastAction.DIGIT
+
+//
+//        if (display.text.toString() == "0") {
+//            Log.d("NB", "0")
+//            display.text = "3.141592654"
+//            displayState = DisplayState.CONTINUE
+//            lastAction = LastAction.DIGIT
+//        } else {
+//            Log.d("NB", "0-9")
+//            if (display.text.toString().countDigitsRegex() < 10) {
+//                if (displayState == DisplayState.CONTINUE) {
+//                    val newValue = display.text.toString() + getString(label)
+//                    display.text = newValue
+//                } else {
+//                    display.text = getString(label)
+//                }
+//                displayState = DisplayState.CONTINUE
+//                lastAction = LastAction.DIGIT
+//            }
+//        }
+    }
+
 
     private fun onClearButtonClicked() {
         Log.d("Clear Button", getString(R.string.btnClear))
@@ -182,7 +256,7 @@ class AdvancedCalcActivity : AppCompatActivity() {
                 reg = result
                 display.text = result.toString()
                 displayState = DisplayState.NEW
-            } else if (lastAction == LastAction.OPER4) {
+            } else if (lastAction == LastAction.OPER_2ARG) {
                 variables()
                 result = doOperation(reg, operand, reg)
                 reg2 = reg
@@ -213,7 +287,6 @@ class AdvancedCalcActivity : AppCompatActivity() {
                 result = arg1 * arg2
             }
             "/" -> {
-                // TODO add catching division by 0
                 result = if (arg2 == 0.0) {
                     Toast.makeText(this, "Division by 0 is not allowed.", Toast.LENGTH_LONG).show()
                     0.0
@@ -221,6 +294,11 @@ class AdvancedCalcActivity : AppCompatActivity() {
                     arg1 / arg2
                 }
             }
+//            "X^Y" -> {
+//                Log.d("xy", "xy")
+//                result = arg1
+//
+//            }
         }
 
         return result
@@ -233,6 +311,6 @@ class AdvancedCalcActivity : AppCompatActivity() {
     }
 
     private enum class LastAction {
-        NONE, DIGIT, OPER4, EQUAL, CLEAR
+        NONE, DIGIT, OPER_2ARG, OPER_1ARG, EQUAL, CLEAR
     }
 }

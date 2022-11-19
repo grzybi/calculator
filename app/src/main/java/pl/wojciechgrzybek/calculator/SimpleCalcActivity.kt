@@ -213,7 +213,6 @@ class SimpleCalcActivity : AppCompatActivity() {
                 result = arg1 * arg2
             }
             "/" -> {
-                // TODO add catching division by 0
                 result = if (arg2 == 0.0) {
                     Toast.makeText(this, "Division by 0 is not allowed.", Toast.LENGTH_LONG).show()
                     0.0
